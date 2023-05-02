@@ -6,17 +6,15 @@ using UnityEngine;
 public class TurretEnemy : MonoBehaviour
 {
     public Transform target;
-
     public GameObject bullet;
-
     public float cooldownduration = 2f;
-
     public bool shooting= true;
+
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        target = GameObject.Find("Player").GetComponent<Transform>();
     }
 
     public IEnumerator Cooldown()
@@ -41,7 +39,8 @@ public class TurretEnemy : MonoBehaviour
             Instantiate(bullet,transform.position,transform.rotation);
             StartCoroutine(Cooldown());
         }
-
-
     }
+    
+
 }
+

@@ -14,6 +14,7 @@ public class PlayerController : MonoBehaviour
     public GameObject bullet;
     public float fireRate= 0.3f;
     public bool firing = true;
+    public ParticleSystem gunFlame;
 
     [Header("Game Mode")]
     public bool twinStick = false;
@@ -59,6 +60,7 @@ public class PlayerController : MonoBehaviour
     {
         
         Instantiate(bullet, gun.position, gun.rotation);
+        gunFlame.Play();
         firing = false;
         yield return new WaitForSeconds(fireRate);
         firing = true;

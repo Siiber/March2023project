@@ -7,6 +7,8 @@ TagManager:
   - Enemy
   - Projectile1
   - projectile
+  - HPpickup
+  - PlayerPicker
   layers:
   - Default
   - TransparentFX

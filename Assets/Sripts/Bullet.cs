@@ -6,10 +6,12 @@ public class Bullet : MonoBehaviour
 {
     public float bulletSpeed = 20f;
 
+    [Header("Stats")]
+    public int damage;
+
     // Start is called before the first frame update
     void Start()
-    {       
-
+    {
         Destroy(gameObject,3f);
     }
 
@@ -23,14 +25,23 @@ public class Bullet : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        
+
         if (other.gameObject.CompareTag("Projectile1"))
         {
-            Destroy(other.gameObject);
+            //Take target attributes
+            AttributesManager EnemyH = other.transform.GetComponent<AttributesManager>();
+            //Deal damage
+            EnemyH.TakeDamage(damage);
         }
 
         if (other.gameObject.CompareTag("Enemy"))
         {
-            Destroy(other.gameObject);
+            //Take target attributes
+            AttributesManager EnemyH = other.transform.GetComponent<AttributesManager>();
+            //Deal damage
+            EnemyH.TakeDamage(damage);
+            //Destroy the gameObject
             Destroy(gameObject);
         }
     }

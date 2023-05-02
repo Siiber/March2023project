@@ -1,9 +1,24 @@
 fileFormatVersion: 2
-guid: 47a92a3d69e9e594c9c4e0d10b35db4f
+guid: 3c5ce163fa76de14b97f1c7ee8cda49d
 ModelImporter:
   serializedVersion: 21300
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Gunmetal
+    second: {fileID: 2100000, guid: fef790f2b9052cb40b0e415394812d14, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: MatteGunmetal
+    second: {fileID: 2100000, guid: c022d152ddc98b7499ab198c797c76b0, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: phong1
+    second: {fileID: 2100000, guid: 37021791b05d4c345bbbcc577fcf3d58, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

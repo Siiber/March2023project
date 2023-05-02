@@ -2,25 +2,21 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyBullet : MonoBehaviour
+public class HealthPickup : MonoBehaviour
 {
-    public float bulletSpeed = 20f;
-    public float lifetime;
 
-    [Header("Stats")]
+    public ParticleSystem pickup;
+    public Animator open;
     public int damage;
 
-    // Start is called before the first frame update
     void Start()
     {
-        Destroy(gameObject, lifetime);
+
     }
 
     // Update is called once per frame
     void Update()
     {
-
-        transform.Translate(Vector3.forward * bulletSpeed * Time.deltaTime);
 
     }
 
@@ -28,21 +24,21 @@ public class EnemyBullet : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player"))
         {
+            print("asd");
             //Take target attributes
             AttributesManager EnemyH = other.transform.GetComponent<AttributesManager>();
             //Deal damage
             EnemyH.TakeDamage(damage);
-            StartCoroutine(Hitstop());
-            Destroy(gameObject);
+            StartCoroutine(Dissappear());
         }
     }
 
-    public IEnumerator Hitstop()
+    public IEnumerator Dissappear ()
     {
-        print("hitstop");
-        Time.timeScale = 0f;
-        yield return new WaitForSecondsRealtime(0.5f);
-        Time.timeScale = 1f;
+        open.SetTrigger("Open");
+        yield return new WaitForSeconds(0.1f);
+        pickup.Play();
+        yield return new WaitForSeconds(2f);
+        Destroy(gameObject);
     }
-
 }
