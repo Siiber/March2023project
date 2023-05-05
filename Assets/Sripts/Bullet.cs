@@ -30,7 +30,7 @@ public class Bullet : MonoBehaviour
         if (other.gameObject.CompareTag("Projectile1"))
         {
             //Take target attributes
-            AttributesManager EnemyH = other.transform.GetComponent<AttributesManager>();
+            BulletHP EnemyH = other.transform.GetComponent<BulletHP>();
             //Deal damage
             EnemyH.TakeDamage(damage);
         }

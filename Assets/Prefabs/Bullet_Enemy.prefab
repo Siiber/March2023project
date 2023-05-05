@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 3710923810174334455}
   - component: {fileID: -8652841570936376693}
   - component: {fileID: 4902946962315710500}
-  - component: {fileID: 8293129900453259185}
+  - component: {fileID: -5282311301787985263}
   m_Layer: 0
   m_Name: Bullet_Enemy
   m_TagString: Projectile1
@@ -128,10 +128,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3c882705ba941b64a98f9b4407442136, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bulletSpeed: 4
+  bulletSpeed: 10
   lifetime: 8
   damage: 25
---- !u!114 &8293129900453259185
+--- !u!114 &-5282311301787985263
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -140,7 +140,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1327031462244670101}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e60cfc4909854ac4da2c9079b6daa4fc, type: 3}
+  m_Script: {fileID: 11500000, guid: 8c96222341cb17b48a4acba174f0c647, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   health: 40

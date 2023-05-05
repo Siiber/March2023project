@@ -26,9 +26,8 @@ public class HealthPickup : MonoBehaviour
         {
             print("asd");
             //Take target attributes
-            AttributesManager EnemyH = other.transform.GetComponent<AttributesManager>();
-            //Deal damage
-            EnemyH.TakeDamage(damage);
+            PlayerHP EnemyH = other.transform.GetComponent<PlayerHP>();
+            EnemyH.FillHp();
             StartCoroutine(Dissappear());
         }
     }

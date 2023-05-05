@@ -29,7 +29,7 @@ public class EnemyBullet : MonoBehaviour
         if (other.gameObject.CompareTag("Player"))
         {
             //Take target attributes
-            AttributesManager EnemyH = other.transform.GetComponent<AttributesManager>();
+            PlayerHP EnemyH = other.transform.GetComponent<PlayerHP>();
             //Deal damage
             EnemyH.TakeDamage(damage);
             StartCoroutine(Hitstop());
