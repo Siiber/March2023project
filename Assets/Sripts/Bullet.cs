@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,6 +6,9 @@ using UnityEngine;
 public class Bullet : MonoBehaviour
 {
     public float bulletSpeed = 20f;
+    public ParticleSystem hitEffect;
+    public SphereCollider bulletCollider;
+    public MeshRenderer bulletMesh;
 
     [Header("Stats")]
     public int damage;
@@ -37,12 +41,19 @@ public class Bullet : MonoBehaviour
 
         if (other.gameObject.CompareTag("Enemy"))
         {
-            //Take target attributes
             AttributesManager EnemyH = other.transform.GetComponent<AttributesManager>();
-            //Deal damage
             EnemyH.TakeDamage(damage);
-            //Destroy the gameObject
-            Destroy(gameObject);
+            StartCoroutine (Hit());
         }
+    }
+    public IEnumerator Hit()
+    {
+        transform.Translate(Vector3.forward * 0f);
+        hitEffect.Play();
+        bulletCollider.enabled = false;
+        bulletMesh.enabled = false;
+        
+        yield return new WaitForSeconds(0.5f);
+        Destroy(gameObject);
     }
 }

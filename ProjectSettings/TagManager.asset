@@ -9,6 +9,7 @@ TagManager:
   - projectile
   - HPpickup
   - PlayerPicker
+  - Score
   layers:
   - Default
   - TransparentFX

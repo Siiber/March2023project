@@ -198,8 +198,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 0}
-  damage: 100
-  enemyspeed: 8
+  damage: 50
+  enemyspeed: 7
+  attributes: {fileID: 3524873397121598210}
 --- !u!114 &3524873397121598210
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -213,7 +214,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 100
+  points: 10
   wS: {fileID: 0}
+  gM: {fileID: 0}
 --- !u!54 &3154697852799261703
 Rigidbody:
   m_ObjectHideFlags: 0

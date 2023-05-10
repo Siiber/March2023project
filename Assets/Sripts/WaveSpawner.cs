@@ -18,7 +18,7 @@ public class WaveSpawner : MonoBehaviour
     private int enemiesDefeated = 0;
     private int currentWave = 0;
     private int enemiesSpawned = 0;
-    private float nextSpawnTime = 0f;
+    private float nextSpawnTime = 3f;
 
     private void Start()
     {

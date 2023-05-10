@@ -214,6 +214,8 @@ MonoBehaviour:
   bullet: {fileID: 1327031462244670101, guid: 152b448a6a333374a9451d07ead3cf8d, type: 3}
   cooldownduration: 0.7
   shooting: 1
+  coneAngle: 30
+  numProjectiles: 2
 --- !u!114 &1953209355774942961
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -227,4 +229,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 100
+  points: 10
   wS: {fileID: 0}
+  gM: {fileID: 0}

@@ -9,6 +9,8 @@ public class TurretEnemy : MonoBehaviour
     public GameObject bullet;
     public float cooldownduration = 2f;
     public bool shooting= true;
+    public float coneAngle;
+    public float numProjectiles;
 
 
     // Start is called before the first frame update
@@ -27,6 +29,8 @@ public class TurretEnemy : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (target== null) { return; }
+
         transform.LookAt(target);
 
         if(shooting == false)
@@ -34,13 +38,18 @@ public class TurretEnemy : MonoBehaviour
             return;
             }
 
-        if(shooting ==true)
-        {
-            Instantiate(bullet,transform.position,transform.rotation);
-            StartCoroutine(Cooldown());
-        }
-    }
-    
+        Vector3 bulletDirection = target.position - transform.position;
+        Quaternion baseRotation = Quaternion.LookRotation(bulletDirection);
 
+        for (int i = 0; i < numProjectiles; i++)
+        {
+            Quaternion randomRotation = Quaternion.Euler(0, Random.Range(-coneAngle, coneAngle), 0);
+            Quaternion bulletRotation = baseRotation * randomRotation;
+
+            Instantiate(bullet, transform.position, bulletRotation);
+        }
+        StartCoroutine(Cooldown());
+        
+    }
 }
 

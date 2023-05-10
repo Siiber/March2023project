@@ -10,6 +10,7 @@ public class ChasingEnemy : MonoBehaviour
     [Header("Stats")]
     public int damage;
     public float enemyspeed = 1f;
+    public AttributesManager attributes;
 
     // Start is called before the first frame update
     void Start()
@@ -33,7 +34,7 @@ public class ChasingEnemy : MonoBehaviour
             PlayerHP EnemyH = other.transform.GetComponent<PlayerHP>();
             //Deal damage
             EnemyH.TakeDamage(damage);
-            Destroy(gameObject);
+            attributes.OnDeath();
         }
     }
 }

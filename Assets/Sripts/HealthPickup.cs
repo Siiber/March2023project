@@ -8,6 +8,7 @@ public class HealthPickup : MonoBehaviour
     public ParticleSystem pickup;
     public Animator open;
     public int damage;
+    public BoxCollider pickCollider;
 
     void Start()
     {
@@ -34,6 +35,7 @@ public class HealthPickup : MonoBehaviour
 
     public IEnumerator Dissappear ()
     {
+        pickCollider.enabled= false;
         open.SetTrigger("Open");
         yield return new WaitForSeconds(0.1f);
         pickup.Play();
