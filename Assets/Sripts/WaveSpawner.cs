@@ -19,7 +19,7 @@ public class WaveSpawner : MonoBehaviour
     private int enemiesDefeated = 0;
     private int enemiesSpawned = 0;
     private float nextSpawnTime = 3f;
-    private int scoreMilestone = 200;
+    private int scoreMilestone = 300;
     private int lastResetScore = 0;
 
     private void Start()
@@ -78,7 +78,7 @@ public class WaveSpawner : MonoBehaviour
 
     void SpawnEnemy()
     {
-        int healthUp = 25;
+        int healthUp = 50;
 
         GameObject enemyPrefab = enemies[Random.Range(0, enemies.Length)] ;
         AttributesManager attributesManager = enemyPrefab.GetComponent<AttributesManager>();

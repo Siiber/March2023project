@@ -36,9 +36,9 @@ public class PauseScript : MonoBehaviour
         {
             pauseMenu.SetActive(true);
             Time.timeScale = 0f;
-
         }
-        else if(!paused)
+
+        if(!paused)
         {
             pauseMenu.SetActive(false);
             Time.timeScale = 1f;

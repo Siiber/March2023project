@@ -211,14 +211,13 @@ public class PlayerController : MonoBehaviour
         //dash
         Quaternion initialRotation = transform.rotation;
         Vector3 dashDirection = gun.forward;
-        playerRigidbody.isKinematic = true;
         float dashDistance = 20f;
         float dashDuration = 0.5f;
         Vector3 dashVelocity = dashDirection * (dashDistance/dashDuration);
         GetComponent<Rigidbody>().velocity = dashVelocity;
         transform.rotation = initialRotation;
-        playerRigidbody.isKinematic = false;
         isDashing = false;
+
 
         //Melee part
         swordAttributes.hitbox.enabled = true;
@@ -227,11 +226,17 @@ public class PlayerController : MonoBehaviour
         melee = false;
         EnableTrailRenderer();
 
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(dashDuration);
+        GetComponent<Rigidbody>().velocity = Vector3.zero;
 
-        melee = true;
+        
         DisableTrailRenderer();
+
         swordAttributes.hitbox.enabled = false;
+
+        yield return new WaitForSeconds(1f);
+        melee = true;
+
     }
 
     //Playmode swap ==============================================

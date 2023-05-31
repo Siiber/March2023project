@@ -198,7 +198,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b54356420a850de4c8be67a3342e41e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pS: {fileID: 0}
+  pS: {fileID: 88365062}
   transitionTime: 0.2
   fadeScreen: {fileID: 0}
 --- !u!4 &88365061
@@ -2684,8 +2684,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pC: {fileID: 0}
-  shotgun: 0
+  shotgun: 1
   rifle: 0
+  weaponCheckmark1: {fileID: 0}
+  weaponCheckmark2: {fileID: 0}
 --- !u!4 &1392911633
 Transform:
   m_ObjectHideFlags: 0
@@ -3920,11 +3922,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1854790040133976624, guid: 149b3fd9902c5c4459a891dc3540c248, type: 3}
       propertyPath: rifle
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1854790040133976624, guid: 149b3fd9902c5c4459a891dc3540c248, type: 3}
       propertyPath: shotgun
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1854790040133976624, guid: 149b3fd9902c5c4459a891dc3540c248, type: 3}
       propertyPath: bulletstats
@@ -3948,7 +3950,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1854790040133976624, guid: 149b3fd9902c5c4459a891dc3540c248, type: 3}
       propertyPath: shotgunPellets
-      value: 20
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 1854790040133976624, guid: 149b3fd9902c5c4459a891dc3540c248, type: 3}
       propertyPath: playerRigidbody
@@ -3968,7 +3970,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1854790040133976624, guid: 149b3fd9902c5c4459a891dc3540c248, type: 3}
       propertyPath: shotgunbulletdmg
-      value: 5
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 1854790040133976624, guid: 149b3fd9902c5c4459a891dc3540c248, type: 3}
       propertyPath: trail.Array.size

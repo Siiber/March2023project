@@ -25,7 +25,7 @@ public class LevelManager : MonoBehaviour
     public IEnumerator LoadLevel(int levelToLoad)
     {
         print("buttonpress");
-        if (!pS == null)
+        if (pS != null)
         {
             pS.paused = false;
         }
