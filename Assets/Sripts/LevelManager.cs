@@ -25,7 +25,10 @@ public class LevelManager : MonoBehaviour
     public IEnumerator LoadLevel(int levelToLoad)
     {
         print("buttonpress");
-        pS.paused= false;
+        if (!pS == null)
+        {
+            pS.paused = false;
+        }
         fadeScreen.SetTrigger("ChangeLevel");
         yield return new WaitForSeconds(transitionTime);
         SceneManager.LoadScene(levelToLoad);

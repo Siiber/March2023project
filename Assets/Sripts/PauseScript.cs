@@ -6,14 +6,19 @@ public class PauseScript : MonoBehaviour
 {
     public bool paused= false;
     public GameObject pauseMenu;
+    public Animator menuanim;
+        
 
     void Start()
     {
+        if (pauseMenu == null) return;
         pauseMenu.SetActive(false);
     }
 
     void Update()
     {
+        if (pauseMenu == null) return;
+
         if (Input.GetButtonDown("Cancel"))
         {
             if (paused==true)
@@ -23,7 +28,7 @@ public class PauseScript : MonoBehaviour
 
             else if (!paused)
             {
-                paused= true;
+                paused = true;
             }
         }
 
@@ -31,6 +36,7 @@ public class PauseScript : MonoBehaviour
         {
             pauseMenu.SetActive(true);
             Time.timeScale = 0f;
+
         }
         else if(!paused)
         {

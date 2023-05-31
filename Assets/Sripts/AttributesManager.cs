@@ -8,12 +8,12 @@ public class AttributesManager : MonoBehaviour
     public int health;
     public int points;
     public WaveSpawner wS;
-    public GameManager gM;
+    public ScoreSys sS;
 
     void Start()
     {
         wS = GameObject.Find("WaveSpawner").GetComponent<WaveSpawner>();
-        gM = GameObject.FindObjectOfType<GameManager>();
+        sS = GameObject.FindObjectOfType<ScoreSys>();
     }
 
     public void TakeDamage(int damage)
@@ -32,7 +32,7 @@ public class AttributesManager : MonoBehaviour
     public void OnDeath()
     {
         wS.OnEnemyDeath();
-        gM.AddScore(points);
+        sS.AddScore(points);
         Destroy(gameObject);
     }
 }

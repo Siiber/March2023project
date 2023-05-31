@@ -5,17 +5,30 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
+    public PlayerController controller;
     public float bulletSpeed = 20f;
     public ParticleSystem hitEffect;
     public SphereCollider bulletCollider;
     public MeshRenderer bulletMesh;
 
     [Header("Stats")]
-    public int damage;
+    private int damage;
 
     // Start is called before the first frame update
     void Start()
     {
+        controller = GameObject.Find("Player").GetComponent<PlayerController>();
+
+        if (controller.rifle)
+        {
+            damage = controller.riflebulletdmg;
+        }
+
+        if (controller.shotgun) 
+        {
+            damage = controller.shotgunbulletdmg;
+        }
+
         Destroy(gameObject,3f);
     }
 

@@ -8,56 +8,57 @@ public class WaveSpawner : MonoBehaviour
     public GameObject[] enemies;
     public float spawnInterval;
     public int enemiesPerWave;
-    public int numberOfWaves;
-    public int totalEnemies;
+    public int maxEnemiesPerWave;
 
     public float timeBetweenWaves = 5f;
     public float timeSinceLastWave = 0f;
+    public ScoreSys points;
+    private float score;
 
     private bool waveCompleted = false;
     private int enemiesDefeated = 0;
-    private int currentWave = 0;
     private int enemiesSpawned = 0;
     private float nextSpawnTime = 3f;
+    private int scoreMilestone = 200;
+    private int lastResetScore = 0;
 
     private void Start()
     {
+
     }
 
     void Update()
     {
-        waveCompleted= false;
+        score = points.score;
+
+        if (waveCompleted & score >= lastResetScore + scoreMilestone)
+        {
+            lastResetScore = Mathf.FloorToInt(score/scoreMilestone)* scoreMilestone;
+            enemiesPerWave = 4;
+        } 
+
+        waveCompleted = false;
         
+        //first waits the time between waves and then starts spawning enemies until the enemiesPerWave is filled
         if (Time.time >nextSpawnTime && enemiesSpawned <enemiesPerWave)
         {
             SpawnEnemy();
             nextSpawnTime= Time.time + spawnInterval;
         }
-
-        if (enemiesDefeated >= totalEnemies)
+        //when all enemies in a wave are defeated wave is completed
+        if (enemiesDefeated >= enemiesPerWave)
         {
             waveCompleted = true;
-
-            if (currentWave < numberOfWaves)
-            {
-                currentWave++;
-                enemiesSpawned = 0;
-                enemiesDefeated = 0;
-                totalEnemies = enemiesPerWave;
-                waveCompleted = false;
-            }
         }
-
+        //move to the next wave and 
         if (waveCompleted)
         {
             timeSinceLastWave += Time.deltaTime;
             if (timeSinceLastWave > timeBetweenWaves)
             {
-                enemiesPerWave += 2;
-                currentWave++;
+                enemiesPerWave = Mathf.Min(enemiesPerWave + 1, maxEnemiesPerWave);
                 enemiesSpawned = 0;
                 enemiesDefeated = 0;
-                totalEnemies = enemiesPerWave;
                 timeSinceLastWave = 0f;
                 waveCompleted = false;
             }
@@ -77,7 +78,18 @@ public class WaveSpawner : MonoBehaviour
 
     void SpawnEnemy()
     {
-        GameObject enemyPrefab = enemies[Random.Range(0, enemies.Length)];
+        int healthUp = 25;
+
+        GameObject enemyPrefab = enemies[Random.Range(0, enemies.Length)] ;
+        AttributesManager attributesManager = enemyPrefab.GetComponent<AttributesManager>();
+        int baseHealth = 100;
+
+        int scoreIncrement = Mathf.FloorToInt(score / 200f);
+        int healthIncrease = scoreIncrement * healthUp;
+
+        int totalHealth = baseHealth + healthIncrease;
+
+        attributesManager.health = totalHealth;
 
         float x = Random.Range(-12f, 12f);
         float z = Random.Range(7f, 10f);

@@ -9,11 +9,16 @@ public class GameManager : MonoBehaviour
 {
 
     public static GameManager instance;
-    public int score;
-    public TextMeshProUGUI scoreText;
+    public PlayerController pC;
+
+    public bool shotgun;
+    public bool rifle;
+    public GameObject weaponCheckmark1;
+    public GameObject weaponCheckmark2;
 
     void Awake()
     {
+        RifleON();
 
         if (instance == null)
         {
@@ -26,10 +31,26 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void AddScore(int points)
+    public void ShotgunON()
     {
-        score += points;
-        scoreText.text = "Score:" + score; 
+        shotgun= true;
+        rifle = false;
+        if (weaponCheckmark1 & weaponCheckmark2 != null)
+        {
+            weaponCheckmark1.SetActive(false);
+            weaponCheckmark2.SetActive(true);
+        }
+    }
+
+    public void RifleON()
+    {
+        rifle= true;
+        shotgun= false;
+        if (weaponCheckmark1 & weaponCheckmark2 != null)
+        {
+            weaponCheckmark1.SetActive(true);
+            weaponCheckmark2.SetActive(false);
+        }
     }
 
     // Update is called once per frame

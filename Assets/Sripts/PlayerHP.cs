@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.EventSystems.EventTrigger;
 
 public class PlayerHP : MonoBehaviour
 {
@@ -9,13 +10,13 @@ public class PlayerHP : MonoBehaviour
     public Healthbar healthbar;
     public float iFdur;
     public Renderer[] pModelRender;
+    public int RegenAmount = 25;
 
     private bool isInvincible = false;
     private float timeOfLastHit = -1f;
 
     private void Start()
     {
-
     }
 
     public void TakeDamage(int damage)
@@ -37,8 +38,15 @@ public class PlayerHP : MonoBehaviour
         healthbar.SetHealth(health);
     }
 
+    public void Regen()
+    {
+        health += RegenAmount;
+        healthbar.SetHealth(health);
+    }
+
     void Update()
     {
+        health = Mathf.Clamp(health, 0, 100);
 
         if (!isInvincible && Time.time - timeOfLastHit>iFdur)
         {
