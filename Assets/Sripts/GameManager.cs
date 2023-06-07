@@ -13,12 +13,9 @@ public class GameManager : MonoBehaviour
 
     public bool shotgun;
     public bool rifle;
-    public GameObject weaponCheckmark1;
-    public GameObject weaponCheckmark2;
 
     void Awake()
     {
-
         if (instance == null)
         {
             DontDestroyOnLoad(gameObject);
@@ -30,31 +27,27 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void ShotgunON()
+    private void Start()
+    {
+
+    }
+
+        public void ShotgunON()
     {
         shotgun= true;
         rifle = false;
-        if (weaponCheckmark1 & weaponCheckmark2 != null)
-        {
-            weaponCheckmark1.SetActive(false);
-            weaponCheckmark2.SetActive(true);
-        }
+
     }
 
     public void RifleON()
     {
         rifle= true;
         shotgun= false;
-        if (weaponCheckmark1 & weaponCheckmark2 != null)
-        {
-            weaponCheckmark1.SetActive(true);
-            weaponCheckmark2.SetActive(false);
-        }
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 }

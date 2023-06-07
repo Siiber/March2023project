@@ -2,17 +2,23 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ButtonManager : MonoBehaviour
 {
     public GameObject[] buttonVariations;
     private PlayerController playerController;
-    public Vector3[] perkPos;
+    public Transform[] perkPos;
 
 
     private void Start()
     {
         playerController = FindObjectOfType<PlayerController>();
+    }
+
+    void Update()
+    {
+
     }
 
     public void SpawnRandomButtons()
@@ -50,7 +56,7 @@ public class ButtonManager : MonoBehaviour
                 buttonPrefab = buttonVariations[randomIndex];
             }
 
-            Vector3 spawnPosition = perkPos[i];
+            Vector3 spawnPosition = perkPos[i].position;
 
             Instantiate(buttonPrefab, spawnPosition, Quaternion.identity, transform);
         }

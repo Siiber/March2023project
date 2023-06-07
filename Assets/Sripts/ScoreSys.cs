@@ -11,11 +11,17 @@ public class ScoreSys : MonoBehaviour
     public int score;
     public PlayerController pC;
     public Transform rewardPos;
+    public GameObject medicrate;
+    public Transform medicrateSpawnpoint;
+    private bool startperk = false;
 
     public GameObject reward;
 
-    private int scoreMilestone = 90;
+    private int scoreMilestone = 200;
     private int lastResetScore = 0;
+
+    private int mediScoreMilestone = 500;
+    private int lastResetScoreMedicrate = 0;
 
     public void AddScore(int points)
     {
@@ -31,11 +37,24 @@ public class ScoreSys : MonoBehaviour
 
     void Update()
     {
+        if (score > 30 && !startperk)
+        {
+            Instantiate(reward, rewardPos);
+            Instantiate(medicrate, medicrateSpawnpoint);
+
+            startperk = true;
+        }
 
         if (score >= lastResetScore + scoreMilestone)
         {
             lastResetScore = Mathf.FloorToInt(score / scoreMilestone) * scoreMilestone;
             Instantiate(reward, rewardPos);
+        }
+
+        if (score >= lastResetScoreMedicrate + mediScoreMilestone)
+        {
+            lastResetScoreMedicrate = Mathf.FloorToInt(score / mediScoreMilestone) * mediScoreMilestone;
+            Instantiate(medicrate, medicrateSpawnpoint);
         }
     }
 

@@ -10,7 +10,11 @@ public class PlayerHP : MonoBehaviour
     public Healthbar healthbar;
     public float iFdur;
     public Renderer[] pModelRender;
+    public Renderer[] gunMRenderer;
     public int RegenAmount = 25;
+    public bool isDead= false;
+    public PlayerController pc;
+    public GameObject player;
 
     private bool isInvincible = false;
     private float timeOfLastHit = -1f;
@@ -27,8 +31,12 @@ public class PlayerHP : MonoBehaviour
             timeOfLastHit= Time.time;
             isInvincible= true;
             healthbar.SetHealth(health);
+            StartCoroutine(Hitstop());
             StartCoroutine(InviTimer());
-            StartCoroutine(InviVisual());
+            if (health >= 1) 
+            {
+                StartCoroutine(InviVisual());
+            }
         }
     }
 
@@ -54,7 +62,21 @@ public class PlayerHP : MonoBehaviour
         }
         if (health <= 0)
         {
-            Destroy(gameObject);
+            isDead = true;
+            pc.enabled= false;
+            CapsuleCollider collider = GetComponent<CapsuleCollider>();
+            if (collider!= null)
+            {
+                collider.enabled = false;
+            }
+            foreach(Renderer renderer in pModelRender) 
+            {
+                renderer.enabled = false;
+            }            
+            foreach(Renderer renderer in gunMRenderer) 
+            {
+                renderer.enabled = false;
+            }
         }
     }
 
@@ -79,5 +101,11 @@ public class PlayerHP : MonoBehaviour
             renderer.enabled = true;
         }
     }
-
+    public IEnumerator Hitstop()
+    {
+        print("hitstop");
+        Time.timeScale = 0.1f;
+        yield return new WaitForSecondsRealtime(0.1f);
+        Time.timeScale = 1f;
+    }
 }

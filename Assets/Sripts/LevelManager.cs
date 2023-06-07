@@ -28,6 +28,7 @@ public class LevelManager : MonoBehaviour
         if (pS != null)
         {
             pS.paused = false;
+            Time.timeScale = 1f;
         }
         fadeScreen.SetTrigger("ChangeLevel");
         yield return new WaitForSeconds(transitionTime);

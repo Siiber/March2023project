@@ -32,17 +32,7 @@ public class EnemyBullet : MonoBehaviour
             PlayerHP EnemyH = other.transform.GetComponent<PlayerHP>();
             //Deal damage
             EnemyH.TakeDamage(damage);
-            StartCoroutine(Hitstop());
             Destroy(gameObject);
         }
     }
-
-    public IEnumerator Hitstop()
-    {
-        print("hitstop");
-        Time.timeScale = 0f;
-        yield return new WaitForSecondsRealtime(0.5f);
-        Time.timeScale = 1f;
-    }
-
 }

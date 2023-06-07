@@ -1,16 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class PauseScript : MonoBehaviour
 {
-    public bool paused= false;
+    public bool paused = false;
     public GameObject pauseMenu;
-    public Animator menuanim;
-        
+    public PlayerHP playerHP;
+    public TextMeshProUGUI gameoverText;
 
     void Start()
     {
+        if (gameoverText != null) 
+        {
+             gameoverText.gameObject.SetActive(false);
+        }
         if (pauseMenu == null) return;
         pauseMenu.SetActive(false);
     }
@@ -19,30 +24,45 @@ public class PauseScript : MonoBehaviour
     {
         if (pauseMenu == null) return;
 
+        if (playerHP != null && playerHP.isDead)
+        {
+            gameoverText.gameObject.SetActive(true);
+            pauseMenu.SetActive(true);
+        }
+
+        if(!paused)
+        {
+            
+        }
+
         if (Input.GetButtonDown("Cancel"))
         {
-            if (paused==true)
+            if (paused == true)
             {
-                paused= false;
+                paused = false;
+                PauseOFF();
             }
 
             else if (!paused)
             {
                 paused = true;
+                PauseON();
+
             }
-        }
-
-        if (paused == true)
-        {
-            pauseMenu.SetActive(true);
-            Time.timeScale = 0f;
-        }
-
-        if(!paused)
-        {
-            pauseMenu.SetActive(false);
-            Time.timeScale = 1f;
         }
     }
 
+    public void PauseON()
+    {
+        pauseMenu.SetActive(true);
+        Time.timeScale = 0f;
+    }
+
+    public void PauseOFF()
+    {
+        pauseMenu.SetActive(false);
+        Time.timeScale = 1f;
+    }
+
 }
+

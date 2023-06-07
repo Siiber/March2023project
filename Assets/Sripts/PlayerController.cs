@@ -287,7 +287,7 @@ public class PlayerController : MonoBehaviour
     {
         if (vampiricMelee)
         {
-            pHP.RegenAmount += 5;
+            pHP.RegenAmount += 2;
         }
         Debug.Log("button vamp");
         vampiricMelee = true;
@@ -302,7 +302,10 @@ public class PlayerController : MonoBehaviour
     public void ActivateFasterFire()
     {
         Debug.Log("button fastfire");
-        fireRate -= 0.05f;
+        if (rifle)
+            fireRate -= 0.04f;
+        if (shotgun)
+            shotgunFireRate -= 0.1f;
     }
 
     //PERKS END HERE==========================================
