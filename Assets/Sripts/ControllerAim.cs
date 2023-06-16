@@ -22,7 +22,7 @@ public class ControllerAim : MonoBehaviour
 
             if (player.firing == true) 
             {
-                player.StartCoroutine("Fire");
+                player.Shoot();
             }
         }
     }

@@ -10,6 +10,8 @@ public class Bullet : MonoBehaviour
     public ParticleSystem hitEffect;
     public SphereCollider bulletCollider;
     public MeshRenderer bulletMesh;
+    public Transform target;
+    public bool twinstick;
 
     [Header("Stats")]
     private int damage;
@@ -29,15 +31,31 @@ public class Bullet : MonoBehaviour
             damage = controller.shotgunbulletdmg;
         }
 
+        if (controller.sniper)
+        {
+            damage = controller.sniperBulletdmg; 
+        }
         Destroy(gameObject,3f);
     }
 
     // Update is called once per frame
     void Update()
     {
-
+        twinstick = controller.twinStick;
+        if (controller.shotgun && controller.superSprong)
+        {
+            transform.localScale += new Vector3(0.5f, 0.5f, 0.5f) * Time.deltaTime;
+            if (!twinstick)
+            {
+                target = GameObject.Find("MousePointer").GetComponent<Transform>();
+                transform.LookAt(target);
+            }
+            else
+                
+            transform.Translate(Vector3.forward * bulletSpeed * Time.deltaTime);
+        }
+        else
         transform.Translate(Vector3.forward*bulletSpeed* Time.deltaTime);
-
     }
 
     private void OnTriggerEnter(Collider other)
@@ -63,9 +81,40 @@ public class Bullet : MonoBehaviour
     {
         transform.Translate(Vector3.forward * 0f);
         hitEffect.Play();
+        //SNIPER UNIQUE EFFECTS =========================================================
+        if (controller.sniper && controller.sprongedBullets)
+        {
+            Quaternion originalRotation = transform.rotation;
+            if (!controller.superSprong)
+            {
+                for (int i = 0; i < 3; i++)
+                {
+                    // Calculate the forked direction
+                    Quaternion forkRotation = Quaternion.Euler(0, -90 + (90 * i), 0);
+                    Quaternion newRotation = originalRotation * forkRotation;
+
+                    // Instantiate the bullet with the calculated rotation
+                    Instantiate(controller.sniperBullet, transform.position, newRotation);
+                }
+            }
+            if (controller.superSprong)
+            {
+                for (int i = 0; i < 5; i++)
+                {
+                    // Calculate the forked direction
+                    Quaternion forkRotation = Quaternion.Euler(0, -90 + (45 * i), 0);
+                    Quaternion newRotation = originalRotation * forkRotation;
+
+                    // Instantiate the bullet with the calculated rotation
+                    Instantiate(controller.sniperBullet, transform.position, newRotation);
+                }
+            }
+        }
+        if (!controller.sniper)
         bulletCollider.enabled = false;
         bulletMesh.enabled = false;
-        
+        //SNIPER UNIQUE EFFECTS END HERE =================================================
+
         yield return new WaitForSeconds(0.5f);
         Destroy(gameObject);
     }

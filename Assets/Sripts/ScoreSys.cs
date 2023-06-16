@@ -30,6 +30,16 @@ public class ScoreSys : MonoBehaviour
         pC.energy += 10;
     }
 
+    public void MeleeScoreAdd(int points)
+    {
+        score += points;
+        scoreText.text = "Score:" + score;
+        if (pC.hyperVamp)
+        pC.energy += 10;
+        else 
+        pC.energy += 3;
+    }
+
     private void Start()
     {
         reward.SetActive(true);

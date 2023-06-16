@@ -15,20 +15,33 @@ public class PlayerController : MonoBehaviour
     public Rigidbody playerRigidbody;
 
     [Header("Shooting")]
+    public ParticleSystem gunFlame;
+    public bool firing = true;
+
+    [Header("Rifle")]
     public Transform gun;
     public GameObject gunAxis;
     public GameObject bullet;
     public Bullet bulletstats;
     public float fireRate= 0.3f;
     public int riflebulletdmg;
-    public bool firing = true;
-    public ParticleSystem gunFlame;
+    
+    [Header("Shotgun")]
     public GameObject shotgunBullet;
     public Bullet shotgunBulletStats;
     public float shotgunPellets;
     public float shotgunConeAngle;
     public float shotgunFireRate = 0.6f;
     public int shotgunbulletdmg;
+
+    [Header("Sniper")]
+    public GameObject sniperBullet;
+    public Bullet sniperBulletStats;
+    public Bullet sprongSniperBullets;
+    public float sniperFireRate = 0.6f;
+    public int sniperBulletdmg;
+    public GameObject sniperMeleeProjectile;
+    public int sniperWaveDMG;
 
     [Header("Melee")]
     public PlayerHP pHP;
@@ -44,21 +57,29 @@ public class PlayerController : MonoBehaviour
     public GameManager gm;
     public bool rifle;
     public bool shotgun;
+    public bool sniper;
 
     [Header("Perks")]
     private ButtonManager bM;
     public bool sprongedBullets;
+    public int sprongCount = 0;
+    public bool superSprong= false;
     public bool vampiricMelee;
+    public int vampiricMeleeCount;
+    public bool hyperVamp = false;
+    public bool easymode;
 
     // Start is called before the first frame update
     void Start()
     {
-
         gm= GameObject.Find("GM").GetComponent<GameManager>();
+        easymode = gm.easymode;
         pHP = GetComponent<PlayerHP>();
         bM = FindObjectOfType<ButtonManager>();
         rifle = gm.rifle;
         shotgun= gm.shotgun;
+        sniper= gm.sniper;
+        twinStick = gm.twinstick;
 
         if (twinStick)
         {
@@ -72,6 +93,15 @@ public class PlayerController : MonoBehaviour
             gunAxis.GetComponent<GunScript>().enabled = true;
         }
 
+        if (easymode)
+        {
+            sprongedBullets= true;
+            sprongCount= 3;
+            vampiricMelee= true;
+            vampiricMeleeCount= 3;
+            playerSpeed += 3;
+        }
+
         DisableTrailRenderer();
         energy = 50;
     }
@@ -80,6 +110,15 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         energy = Mathf.Clamp(energy, 0, 100);
+        if (vampiricMeleeCount >= 3)
+        {
+            hyperVamp= true;
+        }
+
+        if (sprongCount >= 3)
+        {
+            superSprong = true;
+        }
 
         //Movement
         if (!isDashing)
@@ -98,11 +137,18 @@ public class PlayerController : MonoBehaviour
 
         if (Input.GetButton("Fire2") && melee)
         {
-            if (energy > 25)
+            if (!sniper && energy >= 25)
             {
                 energy -= 25;
                 Melee();
             }
+
+            if (sniper && energy >= 50)
+            {
+                energy -= 50;
+                Melee();
+            }
+
             else
                 return;
         }
@@ -118,6 +164,10 @@ public class PlayerController : MonoBehaviour
         {
             StartCoroutine(ShotgunFire());
         }
+        if (sniper)
+        {
+            StartCoroutine(SniperFire());
+        }
     }
 
     public void Melee()
@@ -131,9 +181,14 @@ public class PlayerController : MonoBehaviour
         {
             StartCoroutine(ShotgunDash());
         }
+
+        if (sniper)
+        {
+            StartCoroutine(SniperSword());
+        }
     }
 
-    //Basic rifle firing
+    //===============================================================================Basic rifle firing
     public IEnumerator Fire()
     {
         if (!sprongedBullets)
@@ -144,10 +199,10 @@ public class PlayerController : MonoBehaviour
         {
             Quaternion originalRotation = gun.rotation;
 
-            for (int i = 0; i < 3; i++)
+            for (int i = 0; i < 5; i++)
             {
                 // Calculate the forked direction
-                Quaternion forkRotation = Quaternion.Euler(0, -10 + (10 * i), 0);
+                Quaternion forkRotation = Quaternion.Euler(0, -10 + (5 * i), 0);
                 Quaternion newRotation = originalRotation * forkRotation;
 
                 // Instantiate the bullet with the calculated rotation
@@ -175,7 +230,7 @@ public class PlayerController : MonoBehaviour
         DisableTrailRenderer();
         swordAttributes.hitbox.enabled = false;
     }
-    //Basic shotgun fire
+    //=================================================================================================Basic shotgun fire
     public IEnumerator ShotgunFire()
     {
         Vector3 bulletDirection = gun.position - transform.position;
@@ -191,7 +246,7 @@ public class PlayerController : MonoBehaviour
         }
         if (sprongedBullets)
         {
-            for (int i = 0; i < shotgunPellets + 4f; i++)
+            for (int i = 0; i < shotgunPellets + 5f; i++)
             {
                 Quaternion randomRotation = Quaternion.Euler(0, Random.Range(-shotgunConeAngle, shotgunConeAngle), 0);
                 Quaternion bulletRotation = baseRotation * randomRotation;
@@ -238,6 +293,38 @@ public class PlayerController : MonoBehaviour
         melee = true;
 
     }
+    //====================================================================================SNIPER FIRE HERE ===============================================
+    public IEnumerator SniperFire()
+    {
+        if (!sprongedBullets)
+        {
+            Instantiate(sniperBullet, gun.position, gun.rotation);
+        }
+        if (sprongedBullets)
+        {
+            Instantiate(sprongSniperBullets, gun.position, gun.rotation);
+        }
+
+        gunFlame.Play();
+        firing = false;
+        yield return new WaitForSeconds(sniperFireRate);
+        firing = true;
+    }
+
+    public IEnumerator SniperSword()
+    {
+        swordAttributes.hitbox.enabled = true;
+
+        meleeAnimator.SetTrigger("SniperSwing");
+        melee = false;
+        EnableTrailRenderer();
+        Instantiate(sniperMeleeProjectile, gun.position, gun.rotation);
+        yield return new WaitForSeconds(0.5f);
+
+        melee = true;
+        DisableTrailRenderer();
+        swordAttributes.hitbox.enabled = false;
+    }
 
     //Playmode swap ==============================================
     public void PlaymodeChange()
@@ -274,10 +361,12 @@ public class PlayerController : MonoBehaviour
 
     public void ActivateSprongedBullets()
     {
+        sprongCount++;
         if (sprongedBullets)
         {
             riflebulletdmg += 10;
             shotgunbulletdmg += 10;
+            sniperBulletdmg += 50;
         }
         Debug.Log("button sprong");
         sprongedBullets = true;
@@ -285,8 +374,11 @@ public class PlayerController : MonoBehaviour
 
     public void ActivateVampiricMelee()
     {
+        vampiricMeleeCount++;
         if (vampiricMelee)
         {
+            swordAttributes.damage += 100;
+            sniperWaveDMG += 100;
             pHP.RegenAmount += 2;
         }
         Debug.Log("button vamp");
@@ -296,7 +388,7 @@ public class PlayerController : MonoBehaviour
     public void ActivateSpeedster()
     {
         Debug.Log("button speed");
-        playerSpeed += 0.5f;
+        playerSpeed += 1f;
     }
 
     public void ActivateFasterFire()
@@ -306,6 +398,8 @@ public class PlayerController : MonoBehaviour
             fireRate -= 0.04f;
         if (shotgun)
             shotgunFireRate -= 0.1f;
+        if(sniper)
+            sniperFireRate -= 0.2f;
     }
 
     //PERKS END HERE==========================================

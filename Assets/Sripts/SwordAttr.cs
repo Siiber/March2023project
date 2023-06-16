@@ -24,8 +24,9 @@ public class SwordAttr : MonoBehaviour
         if (other.gameObject.CompareTag("Enemy"))
         {
             AttributesManager EnemyH = other.transform.GetComponent<AttributesManager>();
-            EnemyH.TakeDamage(damage);
-            if (EnemyH.health < 1 && pC.vampiricMelee)
+            EnemyH.TakeMeleeDamage(damage);
+            StartCoroutine(Hitstop());
+            if (EnemyH.meleeHealth < 1 && pC.vampiricMelee)
             {
                 pHP.Regen();
             }
@@ -39,6 +40,14 @@ public class SwordAttr : MonoBehaviour
         pHP = GameObject.Find("Player").GetComponent<PlayerHP>();
 
         hitbox.enabled = false;
+    }
+
+    public IEnumerator Hitstop()
+    {
+        print("hitstop");
+        Time.timeScale = 0.1f;
+        yield return new WaitForSecondsRealtime(0.2f);
+        Time.timeScale = 1f;
     }
 
     // Update is called once per frame

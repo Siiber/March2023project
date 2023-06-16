@@ -11,6 +11,10 @@ public class TurretEnemy : MonoBehaviour
     public bool shooting= true;
     public float coneAngle;
     public float numProjectiles;
+    private float waitTimer = 0.5f;
+    private bool waitOver = false;
+    public AttributesManager aM;
+    private bool dead;
 
 
     // Start is called before the first frame update
@@ -26,29 +30,43 @@ public class TurretEnemy : MonoBehaviour
         shooting= true;
     }
 
+    public IEnumerator InitialWaitTimer()
+    {
+        yield return new WaitForSeconds(waitTimer);
+        waitOver= true;
+    }
+
     // Update is called once per frame
     void Update()
     {
-        if (target== null) { return; }
+        dead = aM.dead;
 
+        if (!waitOver) {
+            StartCoroutine(InitialWaitTimer());
+        }
+
+        if (target== null) { return; }
         transform.LookAt(target);
 
-        if(shooting == false)
+        if (waitOver && !dead)
+        {
+            if (!shooting)
             {
-            return;
+                return;
             }
 
-        Vector3 bulletDirection = target.position - transform.position;
-        Quaternion baseRotation = Quaternion.LookRotation(bulletDirection);
+            Vector3 bulletDirection = target.position - transform.position;
+            Quaternion baseRotation = Quaternion.LookRotation(bulletDirection);
 
-        for (int i = 0; i < numProjectiles; i++)
-        {
-            Quaternion randomRotation = Quaternion.Euler(0, Random.Range(-coneAngle, coneAngle), 0);
-            Quaternion bulletRotation = baseRotation * randomRotation;
+            for (int i = 0; i < numProjectiles; i++)
+            {
+                Quaternion randomRotation = Quaternion.Euler(0, Random.Range(-coneAngle, coneAngle), 0);
+                Quaternion bulletRotation = baseRotation * randomRotation;
 
-            Instantiate(bullet, transform.position, bulletRotation);
+                Instantiate(bullet, transform.position, bulletRotation);
+            }
+            StartCoroutine(Cooldown());
         }
-        StartCoroutine(Cooldown());
         
     }
 }

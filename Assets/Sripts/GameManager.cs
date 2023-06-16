@@ -10,9 +10,12 @@ public class GameManager : MonoBehaviour
 
     public static GameManager instance;
     public PlayerController pC;
+    public bool easymode = false;
+    public bool twinstick = false;
 
     public bool shotgun;
     public bool rifle;
+    public bool sniper;
 
     void Awake()
     {
@@ -29,13 +32,13 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-
     }
 
         public void ShotgunON()
     {
         shotgun= true;
         rifle = false;
+        sniper = false;
 
     }
 
@@ -43,6 +46,29 @@ public class GameManager : MonoBehaviour
     {
         rifle= true;
         shotgun= false;
+        sniper= false;
+    }
+
+    public void SniperON()
+    {
+        sniper= true;
+        shotgun= false;
+        rifle= false;
+    }
+    public void Easymode()
+    {
+        if (!easymode)
+            easymode = true;
+        else if (easymode)
+            easymode = false;
+    }
+
+    public void Twinstick()
+    {
+        if (!twinstick)
+            twinstick = true;
+        else if(twinstick)
+            twinstick = false;
     }
 
     // Update is called once per frame

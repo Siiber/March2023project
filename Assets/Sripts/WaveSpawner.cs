@@ -40,11 +40,31 @@ public class WaveSpawner : MonoBehaviour
         if (initialTime)
         {
             score = points.score;
-
-            if (waveCompleted & score >= lastResetScore + scoreMilestone)
+            if (score <= 1000)
             {
-                lastResetScore = Mathf.FloorToInt(score / scoreMilestone) * scoreMilestone;
-                enemiesPerWave = 4;
+                if (waveCompleted & score >= lastResetScore + scoreMilestone)
+                {
+                    lastResetScore = Mathf.FloorToInt(score / scoreMilestone) * scoreMilestone;
+                    enemiesPerWave = 4;
+                }
+            }
+
+            if (score > 1000 && score<= 2000)
+            {
+                if (waveCompleted & score >= lastResetScore + scoreMilestone)
+                {
+                    lastResetScore = Mathf.FloorToInt(score / scoreMilestone) * scoreMilestone;
+                    enemiesPerWave = 6;
+                }
+            }
+
+            else if (score > 2000)
+            {
+                if (waveCompleted & score >= lastResetScore + scoreMilestone)
+                {
+                    lastResetScore = Mathf.FloorToInt(score / scoreMilestone) * scoreMilestone;
+                    enemiesPerWave = 10;
+                }
             }
 
             waveCompleted = false;
@@ -66,7 +86,7 @@ public class WaveSpawner : MonoBehaviour
                 timeSinceLastWave += Time.deltaTime;
                 if (timeSinceLastWave > timeBetweenWaves)
                 {
-                    enemiesPerWave = Mathf.Min(enemiesPerWave + 1, maxEnemiesPerWave);
+                    enemiesPerWave = Mathf.Min(enemiesPerWave + 1);
                     enemiesSpawned = 0;
                     enemiesDefeated = 0;
                     timeSinceLastWave = 0f;

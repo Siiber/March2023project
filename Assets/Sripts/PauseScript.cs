@@ -9,6 +9,7 @@ public class PauseScript : MonoBehaviour
     public GameObject pauseMenu;
     public PlayerHP playerHP;
     public TextMeshProUGUI gameoverText;
+    public EventSysScript eSys;
 
     void Start()
     {
@@ -45,9 +46,9 @@ public class PauseScript : MonoBehaviour
 
             else if (!paused)
             {
+                eSys.PauseFirst();
                 paused = true;
                 PauseON();
-
             }
         }
     }

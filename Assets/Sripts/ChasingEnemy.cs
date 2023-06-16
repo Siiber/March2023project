@@ -11,6 +11,9 @@ public class ChasingEnemy : MonoBehaviour
     public int damage;
     public float enemyspeed = 1f;
     public AttributesManager attributes;
+    private float waitTimer = 0.5f;
+    private bool waitOver = false;
+    private bool dead;
 
     // Start is called before the first frame update
     void Start()
@@ -21,20 +24,36 @@ public class ChasingEnemy : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        dead = attributes.dead;
+        if (!waitOver)
+        {
+            StartCoroutine(InitialWaitTimer());
+        }
         transform.LookAt(target);
 
-        transform.Translate(Vector3.forward * enemyspeed * Time.deltaTime);
+        if (waitOver)
+        {
+            transform.Translate(Vector3.forward * enemyspeed * Time.deltaTime);
+        }
 
     }
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("Player"))
         {
-            //Take target attributes
-            PlayerHP EnemyH = other.transform.GetComponent<PlayerHP>();
-            //Deal damage
-            EnemyH.TakeDamage(damage);
-            attributes.OnDeath();
+            if (!dead)
+            {
+                //Take target attributes
+                PlayerHP EnemyH = other.transform.GetComponent<PlayerHP>();
+                //Deal damage
+                EnemyH.TakeDamage(damage);
+                attributes.OnDeath();
+            }
         }
+    }
+    public IEnumerator InitialWaitTimer()
+    {
+        yield return new WaitForSeconds(waitTimer);
+        waitOver = true;
     }
 }

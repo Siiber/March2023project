@@ -15,6 +15,7 @@ public class PlayerHP : MonoBehaviour
     public bool isDead= false;
     public PlayerController pc;
     public GameObject player;
+    public ParticleSystem explosion;
 
     private bool isInvincible = false;
     private float timeOfLastHit = -1f;
@@ -62,6 +63,10 @@ public class PlayerHP : MonoBehaviour
         }
         if (health <= 0)
         {
+            if (!isDead)
+            {
+                Instantiate(explosion, transform.position, transform.rotation);
+            }
             isDead = true;
             pc.enabled= false;
             CapsuleCollider collider = GetComponent<CapsuleCollider>();

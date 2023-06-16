@@ -10,9 +10,19 @@ public class ButtonFunctionality : MonoBehaviour
     public PlayerController pC;
     public ButtonManager bM;
     public GameManager gameManager;
+    public Animator buttonswap;
+    public Sprite onButton;
+    public Sprite offButton;
+    public EventSysScript eventSys;
+
+
 
     private void Awake()
     {
+        if (!onButton == null)
+        {
+            button.image.sprite = onButton;
+        }
         button = GetComponent<Button>();
         button.onClick.AddListener(OnClick);
 
@@ -35,6 +45,11 @@ public class ButtonFunctionality : MonoBehaviour
     {
         if (bM!= null)
         bM.ClearButtons();
+    }
+
+    public void Twinstick()
+    {
+        gameManager.Twinstick();
     }
 
     public void FasterFire()
@@ -68,5 +83,24 @@ public class ButtonFunctionality : MonoBehaviour
     public void Shotgun()
     {
         gameManager.ShotgunON();
+    }
+
+    public void Sniper()
+    {
+        gameManager.SniperON();
+    }
+
+    public void Easymode()
+    {
+        gameManager.Easymode();
+    }
+
+    public void Swapbutton()
+    {
+        if (button.image.sprite == onButton)
+            button.image.sprite = offButton;
+
+        else
+            button.image.sprite = onButton;
     }
 }
