@@ -10,6 +10,7 @@ public class PauseScript : MonoBehaviour
     public PlayerHP playerHP;
     public TextMeshProUGUI gameoverText;
     public EventSysScript eSys;
+    private bool hasPlayerDied = false;
 
     void Start()
     {
@@ -25,13 +26,18 @@ public class PauseScript : MonoBehaviour
     {
         if (pauseMenu == null) return;
 
-        if (playerHP != null && playerHP.isDead)
+        if (playerHP != null)
         {
-            gameoverText.gameObject.SetActive(true);
-            pauseMenu.SetActive(true);
+            if (playerHP.isDead && !hasPlayerDied)
+            {
+                hasPlayerDied= true;
+                eSys.PauseFirst();
+                gameoverText.gameObject.SetActive(true);
+                pauseMenu.SetActive(true);
+            }
         }
 
-        if(!paused)
+        if (!paused)
         {
             
         }

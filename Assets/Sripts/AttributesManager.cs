@@ -12,17 +12,20 @@ public class AttributesManager : MonoBehaviour
     public ScoreSys sS;
     public ParticleSystem explosion;
     public Renderer[] mRenderer;
+    public AudioManager audioManager;
     public bool dead =false;
 
     void Start()
     {
         wS = GameObject.Find("WaveSpawner").GetComponent<WaveSpawner>();
         sS = GameObject.FindObjectOfType<ScoreSys>();
+        audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
         meleeHealth = health;
     }
 
     public void TakeDamage(int damage)
     {
+        audioManager.Play("HItEnemy");
         health -= damage;
     }
 
@@ -36,12 +39,14 @@ public class AttributesManager : MonoBehaviour
         if (health <= 0 && !dead)
         {
             dead = true;
+            audioManager.Play("Explosion_enemy");
             Instantiate(explosion, transform.position, transform.rotation);
             OnDeath();
         }
         if (meleeHealth <= 0 && !dead)
         {
             dead = true;
+            audioManager.Play("Explosion_enemy");
             Instantiate(explosion, transform.position, transform.rotation);
             OnMeleeDeath();
         }

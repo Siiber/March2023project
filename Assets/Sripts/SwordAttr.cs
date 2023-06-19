@@ -10,6 +10,7 @@ public class SwordAttr : MonoBehaviour
     public BoxCollider hitbox;
     public PlayerController pC;
     public PlayerHP pHP;
+    public AudioManager audioManager;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -38,6 +39,7 @@ public class SwordAttr : MonoBehaviour
     {
         pC = GameObject.Find("Player").GetComponent<PlayerController>();
         pHP = GameObject.Find("Player").GetComponent<PlayerHP>();
+        audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
 
         hitbox.enabled = false;
     }
@@ -45,6 +47,7 @@ public class SwordAttr : MonoBehaviour
     public IEnumerator Hitstop()
     {
         print("hitstop");
+        audioManager.Play("Melee_sound");
         Time.timeScale = 0.1f;
         yield return new WaitForSecondsRealtime(0.2f);
         Time.timeScale = 1f;

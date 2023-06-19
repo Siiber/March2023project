@@ -13,9 +13,11 @@ public class ScoreSys : MonoBehaviour
     public Transform rewardPos;
     public GameObject medicrate;
     public Transform medicrateSpawnpoint;
-    private bool startperk = false;
+    public bool startperk = false;
+
 
     public GameObject reward;
+    public float bulletspeed = 20f;
 
     private int scoreMilestone = 200;
     private int lastResetScore = 0;
@@ -57,6 +59,7 @@ public class ScoreSys : MonoBehaviour
 
         if (score >= lastResetScore + scoreMilestone)
         {
+            bulletspeed += 1f;
             lastResetScore = Mathf.FloorToInt(score / scoreMilestone) * scoreMilestone;
             Instantiate(reward, rewardPos);
         }
@@ -65,6 +68,7 @@ public class ScoreSys : MonoBehaviour
         {
             lastResetScoreMedicrate = Mathf.FloorToInt(score / mediScoreMilestone) * mediScoreMilestone;
             Instantiate(medicrate, medicrateSpawnpoint);
+
         }
     }
 

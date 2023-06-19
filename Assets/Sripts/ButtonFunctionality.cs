@@ -2,7 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 using static UnityEngine.GraphicsBuffer;
+using System.Xml.Serialization;
 
 public class ButtonFunctionality : MonoBehaviour
 {
@@ -14,6 +16,10 @@ public class ButtonFunctionality : MonoBehaviour
     public Sprite onButton;
     public Sprite offButton;
     public EventSysScript eventSys;
+    public AudioManager audioManager;
+
+    public bool isSwappable1= false;
+    public bool isSwappable2= false;
 
 
 
@@ -34,6 +40,29 @@ public class ButtonFunctionality : MonoBehaviour
 
         gameManager= GameObject.FindObjectOfType<GameManager>();
 
+        audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
+
+    }
+
+    private void Start()
+    {
+        audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
+
+        if (isSwappable1)
+        {
+            if(gameManager.easymode)
+            {
+                button.image.sprite = offButton;
+            }
+        }
+
+        if (isSwappable2)
+        {
+            if (gameManager.twinstick)
+            {
+                button.image.sprite = offButton;
+            }
+        }
     }
 
     private void OnDestroy()
@@ -45,6 +74,21 @@ public class ButtonFunctionality : MonoBehaviour
     {
         if (bM!= null)
         bM.ClearButtons();
+    }
+
+    public void Click()
+    {
+        audioManager.Play("UIClick_sound");
+    }
+
+    public void Hover()
+    {
+        audioManager.Play("UIHover_sound");
+    }
+
+    public void OnMouseEnter()
+    {
+        
     }
 
     public void Twinstick()

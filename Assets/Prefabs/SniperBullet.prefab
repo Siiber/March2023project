@@ -4968,7 +4968,7 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.6388026
+  m_Radius: 0.96502566
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &-8652841570936376693
 Rigidbody:
@@ -5003,3 +5003,5 @@ MonoBehaviour:
   hitEffect: {fileID: 54334367}
   bulletCollider: {fileID: 3710923810174334455}
   bulletMesh: {fileID: 1394993585649005049}
+  target: {fileID: 0}
+  twinstick: 0

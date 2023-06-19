@@ -13,6 +13,7 @@ public class PlayerController : MonoBehaviour
     public float playerSpeed =1f;
     private bool isDashing = false;
     public Rigidbody playerRigidbody;
+    public AudioManager audioManager;
 
     [Header("Shooting")]
     public ParticleSystem gunFlame;
@@ -33,6 +34,7 @@ public class PlayerController : MonoBehaviour
     public float shotgunConeAngle;
     public float shotgunFireRate = 0.6f;
     public int shotgunbulletdmg;
+    public float dashDistance = 25;
 
     [Header("Sniper")]
     public GameObject sniperBullet;
@@ -65,14 +67,17 @@ public class PlayerController : MonoBehaviour
     public int sprongCount = 0;
     public bool superSprong= false;
     public bool vampiricMelee;
-    public int vampiricMeleeCount;
+    public int vampiricMeleeCount=0;
     public bool hyperVamp = false;
     public bool easymode;
+    public int speedCount = 0;
+    public int rateCount = 0;
 
     // Start is called before the first frame update
     void Start()
     {
-        gm= GameObject.Find("GM").GetComponent<GameManager>();
+        audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
+        gm = GameObject.Find("GM").GetComponent<GameManager>();
         easymode = gm.easymode;
         pHP = GetComponent<PlayerHP>();
         bM = FindObjectOfType<ButtonManager>();
@@ -175,17 +180,32 @@ public class PlayerController : MonoBehaviour
         if (rifle)
         {
             StartCoroutine(Sword());
+            StartCoroutine(MeleeSoundEffect());
         }
 
         if (shotgun && !isDashing)
         {
             StartCoroutine(ShotgunDash());
+            StartCoroutine(MeleeSoundEffect());
         }
 
         if (sniper)
         {
             StartCoroutine(SniperSword());
+            StartCoroutine(MeleeSoundEffect());
         }
+    }
+
+    public IEnumerator MeleeSoundEffect()
+    {
+        if(!melee)
+        audioManager.Play("MeleeWhiff");
+        yield return new WaitForSeconds(0.2f);
+        if (shotgun)
+            audioManager.Play("MeleeWhiff2");
+        else
+            audioManager.Play("MeleeWhiff");
+        
     }
 
     //===============================================================================Basic rifle firing
@@ -198,7 +218,17 @@ public class PlayerController : MonoBehaviour
         if (sprongedBullets)
         {
             Quaternion originalRotation = gun.rotation;
+            if(!superSprong)
+            for (int i = 0; i < 3; i++)
+            {
+                // Calculate the forked direction
+                Quaternion forkRotation = Quaternion.Euler(0, -10 + (10 * i), 0);
+                Quaternion newRotation = originalRotation * forkRotation;
 
+                // Instantiate the bullet with the calculated rotation
+                Instantiate(bullet, gun.position, newRotation);
+            }            
+            else
             for (int i = 0; i < 5; i++)
             {
                 // Calculate the forked direction
@@ -211,6 +241,7 @@ public class PlayerController : MonoBehaviour
         }
 
         gunFlame.Play();
+        audioManager.Play("Shoot_Rifle");
         firing = false;
         yield return new WaitForSeconds(fireRate);
         firing = true; 
@@ -254,8 +285,11 @@ public class PlayerController : MonoBehaviour
             }
         }
 
+        audioManager.Play("Shoot_Shotgun");
         gunFlame.Play();
         firing = false;
+        yield return new WaitForSeconds(0.1f);
+        audioManager.Play("ShotgunPriming");
         yield return new WaitForSeconds(shotgunFireRate);
         firing = true;
     }
@@ -266,7 +300,6 @@ public class PlayerController : MonoBehaviour
         //dash
         Quaternion initialRotation = transform.rotation;
         Vector3 dashDirection = gun.forward;
-        float dashDistance = 20f;
         float dashDuration = 0.5f;
         Vector3 dashVelocity = dashDirection * (dashDistance/dashDuration);
         GetComponent<Rigidbody>().velocity = dashVelocity;
@@ -305,6 +338,7 @@ public class PlayerController : MonoBehaviour
             Instantiate(sprongSniperBullets, gun.position, gun.rotation);
         }
 
+        audioManager.Play("Shoot_Sniper");
         gunFlame.Play();
         firing = false;
         yield return new WaitForSeconds(sniperFireRate);
@@ -364,8 +398,8 @@ public class PlayerController : MonoBehaviour
         sprongCount++;
         if (sprongedBullets)
         {
-            riflebulletdmg += 10;
-            shotgunbulletdmg += 10;
+            riflebulletdmg += 5;
+            shotgunbulletdmg += 5;
             sniperBulletdmg += 50;
         }
         Debug.Log("button sprong");
@@ -377,8 +411,8 @@ public class PlayerController : MonoBehaviour
         vampiricMeleeCount++;
         if (vampiricMelee)
         {
-            swordAttributes.damage += 100;
-            sniperWaveDMG += 100;
+            swordAttributes.damage += 50;
+            sniperWaveDMG += 50;
             pHP.RegenAmount += 2;
         }
         Debug.Log("button vamp");
@@ -387,15 +421,17 @@ public class PlayerController : MonoBehaviour
 
     public void ActivateSpeedster()
     {
+        speedCount++;
         Debug.Log("button speed");
         playerSpeed += 1f;
     }
 
     public void ActivateFasterFire()
     {
+        rateCount++;
         Debug.Log("button fastfire");
         if (rifle)
-            fireRate -= 0.04f;
+            fireRate -= 0.05f;
         if (shotgun)
             shotgunFireRate -= 0.1f;
         if(sniper)

@@ -50,7 +50,6 @@ public class Bullet : MonoBehaviour
                 target = GameObject.Find("MousePointer").GetComponent<Transform>();
                 transform.LookAt(target);
             }
-            else
                 
             transform.Translate(Vector3.forward * bulletSpeed * Time.deltaTime);
         }
@@ -110,10 +109,11 @@ public class Bullet : MonoBehaviour
                 }
             }
         }
+        //SNIPER UNIQUE EFFECTS END HERE =================================================
         if (!controller.sniper)
         bulletCollider.enabled = false;
         bulletMesh.enabled = false;
-        //SNIPER UNIQUE EFFECTS END HERE =================================================
+        
 
         yield return new WaitForSeconds(0.5f);
         Destroy(gameObject);

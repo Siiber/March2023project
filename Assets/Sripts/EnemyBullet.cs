@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class EnemyBullet : MonoBehaviour
 {
-    public float bulletSpeed = 20f;
+    public float bulletSpeed;
     public float lifetime;
+    public ScoreSys scoreSys;
 
     [Header("Stats")]
     public int damage;
@@ -13,6 +14,8 @@ public class EnemyBullet : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        scoreSys = GameObject.Find("ScoringSystem").GetComponent<ScoreSys>();
+        bulletSpeed = scoreSys.bulletspeed;
         Destroy(gameObject, lifetime);
     }
 

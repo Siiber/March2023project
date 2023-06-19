@@ -13,16 +13,29 @@ public class ButtonManager : MonoBehaviour
     public Transform[] perkPos;
     public EventSysScript eventSys;
 
+    public GameObject perkguider;
+    public Transform perkguiderSpawnP;
+    private bool guided= false;
+    [HideInInspector]
+    public bool perkguiderOFF= false; 
+
+    public ScoreSys scoreSys;
+
     private Selectable[] selectables;
 
     private void Start()
     {
+        scoreSys = GameObject.Find("ScoringSystem").GetComponent<ScoreSys>();
         playerController = FindObjectOfType<PlayerController>();
     }
 
     void Update()
     {
-
+        if (scoreSys.startperk && !guided)
+        {
+            Instantiate(perkguider, perkguiderSpawnP);
+            guided = true;
+        }
     }
 
     public void SpawnRandomButtons()
@@ -66,6 +79,7 @@ public class ButtonManager : MonoBehaviour
         {
             Destroy(child.gameObject);
         }
+        perkguiderOFF = true;
     }
 
     private int[] GenerateRandomIndices(int count)

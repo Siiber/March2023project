@@ -9,6 +9,7 @@ public class MeleeWaveAttr : MonoBehaviour
     public GameObject swishEffect;
     public BoxCollider Collider;
     public PlayerHP pHP;
+    public AudioManager audioManager;
 
     [Header("Stats")]
     private int damage;
@@ -18,6 +19,7 @@ public class MeleeWaveAttr : MonoBehaviour
     {
         controller = GameObject.Find("Player").GetComponent<PlayerController>();
         pHP = GameObject.Find("Player").GetComponent<PlayerHP>();
+        audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
 
         damage = controller.sniperWaveDMG;
 
@@ -48,7 +50,7 @@ public class MeleeWaveAttr : MonoBehaviour
             {
                 pHP.Regen();
             }
-
+            audioManager.Play("Melee_sound");
             Instantiate(swishEffect, transform.position, transform.rotation);
         }
     }

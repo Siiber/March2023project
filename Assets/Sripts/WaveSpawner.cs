@@ -122,8 +122,8 @@ public class WaveSpawner : MonoBehaviour
 
         attributesManager.health = totalHealth;
 
-        float x = Random.Range(-12f, 12f);
-        float z = Random.Range(7f, 10f);
+        float x = Random.Range(-11f, 11f);
+        float z = Random.Range(6f, 11f);
 
         Vector3 spawnPosition = new Vector3(x, 0f, z);
         Instantiate(enemyPrefab, spawnPosition, Quaternion.identity);

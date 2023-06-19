@@ -6,7 +6,7 @@ using UnityEngine;
 public class TurretEnemy : MonoBehaviour
 {
     public Transform target;
-    public GameObject bullet;
+    public GameObject[] bullets;
     public float cooldownduration = 2f;
     public bool shooting= true;
     public float coneAngle;
@@ -15,11 +15,17 @@ public class TurretEnemy : MonoBehaviour
     private bool waitOver = false;
     public AttributesManager aM;
     private bool dead;
+    public ScoreSys scoreSys;
+    private bool bigBadBullets= false;
+    public float scoreThreshold= 100;
+    public int projectileCountIncrease = 500;
+    private int projectileCountIncReset= 0;
 
 
     // Start is called before the first frame update
     void Start()
     {
+        scoreSys = GameObject.Find("ScoringSystem").GetComponent<ScoreSys>();
         target = GameObject.Find("Player").GetComponent<Transform>();
     }
 
@@ -40,6 +46,15 @@ public class TurretEnemy : MonoBehaviour
     void Update()
     {
         dead = aM.dead;
+        if (scoreSys.score >= scoreThreshold)
+        {
+            bigBadBullets= true;
+        }
+        if (scoreSys.score >= projectileCountIncReset + projectileCountIncrease)
+        {
+            projectileCountIncReset = Mathf.FloorToInt(scoreSys.score / projectileCountIncrease) * projectileCountIncrease;
+            numProjectiles += 1;
+        }
 
         if (!waitOver) {
             StartCoroutine(InitialWaitTimer());
@@ -62,8 +77,13 @@ public class TurretEnemy : MonoBehaviour
             {
                 Quaternion randomRotation = Quaternion.Euler(0, Random.Range(-coneAngle, coneAngle), 0);
                 Quaternion bulletRotation = baseRotation * randomRotation;
-
-                Instantiate(bullet, transform.position, bulletRotation);
+                if (bigBadBullets)
+                {
+                    int randomIndex = Random.Range(0, bullets.Length);
+                    Instantiate(bullets[randomIndex], transform.position, bulletRotation);
+                }
+                else
+                    Instantiate(bullets[0], transform.position, bulletRotation);
             }
             StartCoroutine(Cooldown());
         }
